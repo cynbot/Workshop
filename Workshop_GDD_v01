@@ -1,0 +1,215 @@
+## **"The Workshop" - Game Design Document**
+*A birthday gift game about finding comfort in digital spaces*
+
+---
+
+### **📦 CONCEPT OVERVIEW**
+
+**Tagline:** *"A third space between the digital and real, where constructs keep the lights on for you"*
+
+**Genre:** Cozy puzzle/ambient experience  
+**Platform:** Web (PWA) - works on all devices  
+**Target Audience:** One specific friend (but designed to feel universal)  
+**Play Time:** 5-10 minute sessions, grows over time  
+**Core Feeling:** Being held when alone, productive procrastination, gentle care  
+
+---
+
+### **🎮 CORE MECHANICS**
+
+#### **Primary Loop**
+1. **Enter Workshop** → Ambient response to time/weather
+2. **Discover/Receive Pieces** → Through time, interaction, or just showing up  
+3. **Build Constructs** → Drag-and-drop assembly, no fail states
+4. **Constructs Populate Workshop** → Permanent additions that make space "yours"
+5. **Unlock Messages/Memories** → Hidden in radio, pieces, combinations
+
+#### **Piece Discovery Methods**
+- **Time-Based:** Morning visits, late nights, specific dates
+- **Environmental:** Click radio, watch window, let idle
+- **Emotional Check-ins:** Optional mood selection
+- **Weather-Triggered:** Rain/storm pieces
+- **Special Dates:** Birthday, holidays, anniversary of friendship
+
+#### **Construction System**
+- **No "Wrong" Builds** - All combinations work
+- **Mood Mixing** - Pieces have emotional properties
+  - Midnight (blue/purple) = Rest/Dreams
+  - Neon (pink/cyan) = Energy/Rebellion  
+  - Golden (amber) = Memory/Warmth
+  - Chrome (silver) = Focus/Clarity
+  - Verdant (green) = Growth/Patience
+- **Persistent Builds** - Everything stays in workshop
+- **Blueprint Journal** - Save favorite combinations
+
+---
+
+### **🎨 VISUAL DESIGN**
+
+#### **Resolution & Style**
+- **Base:** 360x640px (portrait) / 640x360px (landscape)
+- **Pixel Art:** 2x2 or 3x3 pixel chunks
+- **Color Modes:** Day/Night automatic transition
+
+#### **Palette**
+```
+NIGHT MODE (8pm-6am):
+Background:  #1a0b2e (deep purple-black)
+Midtones:    #2e1f5c (purple-grey)  
+Highlights:  #6b4c8a (muted purple)
+Neon:        #00ffff (cyan glow)
+Warm:        #ff6b35 (orange tools/lamp)
+
+DAY MODE:
+Background:  #2c3e50 (blue-grey)
+Midtones:    #5a6c7d (industrial)
+Highlights:  #95a5b3 (soft metals)
+Sunlight:    #ffd700 (golden hour)
+Plant:       #2ecc71 (stubborn succulent)
+```
+
+#### **Key Visual Elements**
+- **Workshop:** Cluttered but cozy, lived-in feel
+- **Window:** Shows weather (rain/clear/storm)
+- **Radio:** Vintage, glows when broadcasting
+- **Shelves:** Display completed constructs
+- **Workbench:** Assembly area with tools
+- **Constructs:** 16x20px sprites with idle animations
+
+---
+
+### **💝 THE GIFT ELEMENTS**
+
+#### **Radio Transmissions**
+- Pre-loaded quotes from mutual friends
+- Special birthday messages (hidden until the day)
+- "Intercepted" care disguised as cyberpunk lore
+- Format: `"[message]" - [friend name]`
+
+#### **Hidden Narrative**
+Pieces contain fragments of a larger story:
+- The workshop exists because friendship needed a space
+- Each construct is a crystallized memory/feeling
+- Building them "remembers" them into being
+- The space grows more "real" with each visit
+
+#### **Birthday Surprises**
+- Special golden pieces appear
+- All constructs "celebrate" with unique animations
+- Radio plays birthday messages from friends
+- Workshop decorated with pixel confetti
+- Unlock "The Original Piece" with special message
+
+---
+
+### **🔧 TECHNICAL SPECIFICATIONS**
+
+#### **Stack**
+- **Core:** HTML5 + JavaScript (no framework for simplicity)
+- **Graphics:** Canvas API or Phaser.js
+- **Audio:** Howler.js (handles web audio quirks)
+- **Storage:** localStorage for saves
+- **Hosting:** GitHub Pages (free, reliable)
+
+#### **PWA Features**
+- Installable as "app" on phone/desktop
+- Works fully offline after first visit
+- Service Worker caches all assets
+- Updates seamlessly when online
+
+#### **File Size Budget**
+- Sprites: ~100KB (single PNG sheet)
+- Code: ~50KB minified  
+- Audio: ~200KB (optional download)
+- **Total: <400KB** (loads on any connection)
+
+---
+
+### **📝 CONTENT LISTS**
+
+#### **Launch Pieces (20-25 total)**
+- **Time Pieces:** Dawn Circuit, Midnight Core, Starlight Lens
+- **Weather Pieces:** Storm Core, Rain Fragment, Clear Sky Chip  
+- **Emotion Pieces:** Comfort Cog, Rebellion Chip, Focus Crystal
+- **Special Pieces:** Memory Alloy, Ghost Protocol, Bionicle Heart
+- **Hidden Pieces:** The First Piece, Birthday Beacon, Friend Fragment
+
+#### **Launch Constructs (5-7 buildable)**
+- Sleepy Sentinel (rest reminder)
+- Hydration Helper (water prompts)
+- Memory Keeper (displays "photos")
+- Chaos Gremlin (just vibes)
+- Guardian Unit (protective friend)
+
+#### **Radio Messages (50+ at launch)**
+- 20 friend quotes (collected beforehand)
+- 10 birthday specific (hidden until day)
+- 10 time-based (morning/night appropriate)
+- 10 cyberpunk-themed care messages
+- Random rotation, no repeats in session
+
+---
+
+### **📅 IMPLEMENTATION TIMELINE**
+
+#### **Week 1-2: Foundation**
+- [x] Basic workshop layout
+- [ ] Day/night cycle
+- [ ] Piece drag-and-drop
+- [ ] localStorage saves
+
+#### **Week 3-4: Core Features**  
+- [ ] 5 constructs with assembly
+- [ ] Radio with messages
+- [ ] Weather effects
+- [ ] Construct animations
+
+#### **Week 5-6: Polish & Gift Details**
+- [ ] All pieces implemented
+- [ ] Friend quotes integrated
+- [ ] Birthday surprises hidden
+- [ ] PWA configuration
+- [ ] Final art pass
+
+#### **Week 7: Testing & Deploy**
+- [ ] Cross-device testing
+- [ ] Friend beta test
+- [ ] Final message writing
+- [ ] Deploy to GitHub Pages
+
+---
+
+### **❤️ DESIGN PILLARS**
+
+1. **No Failure States** - Everything builds something beautiful
+2. **Respect Their Time** - Quick sessions, no obligation
+3. **Growth Not Goals** - Workshop evolves, never "completes"
+4. **Hidden Depth** - Surface simplicity, secret richness
+5. **Ambient Care** - Gentle nudges, never pushy
+
+---
+
+### **🎵 AUDIO (Stretch Goals)**
+
+- Ambient workshop sounds (rain, tools, hum)
+- Soft click/snap for piece connections
+- Radio static between "stations"
+- Constructs have unique activation sounds
+- Optional lo-fi background track
+
+---
+
+### **📚 INSPIRATION REFERENCES**
+
+- **Aesthetic:** Cyberpunk 2077's quiet moments + Stardew Valley's coziness
+- **Mechanics:** Monument Valley's no-fail puzzles
+- **Feeling:** Animal Crossing's "checking in" vibe
+- **Purpose:** A weighted blanket in game form
+
+---
+
+*"The workshop keeps the lights on for you"*
+
+---
+
+Want me to expand any section or create specific asset lists/technical documentation? This should give you a solid foundation to work from! 🛠️✨
