@@ -6,6 +6,14 @@ class WorkshopGame {
         this.canvas = document.getElementById('workshop-canvas');
         this.ctx = this.canvas.getContext('2d');
 
+        // VERIFY CONTEXT
+        if (!this.ctx) {
+            alert('Canvas context failed! Check browser support.');
+            console.error('No canvas context!');
+            return;
+        }
+        console.log('Canvas context OK:', this.ctx);
+
         // Make canvas crisp for pixel art
         this.ctx.imageSmoothingEnabled = false;
 
@@ -326,14 +334,24 @@ class WorkshopGame {
     gameLoop(currentTime = 0) {
         if (!this.isRunning) return;
 
-        const deltaTime = currentTime - this.lastTime;
-        this.lastTime = currentTime;
+        try {
+            const deltaTime = currentTime - this.lastTime;
+            this.lastTime = currentTime;
 
-        // Update
-        this.update(deltaTime);
+            // Update
+            this.update(deltaTime);
 
-        // Render
-        this.render();
+            // Render
+            this.render();
+        } catch (error) {
+            console.error('Game loop error:', error);
+            // Update debug display
+            const debug = document.getElementById('debug-info');
+            if (debug) {
+                debug.innerHTML = `ERROR: ${error.message}`;
+                debug.style.color = '#f00';
+            }
+        }
 
         // Continue loop
         requestAnimationFrame((time) => this.gameLoop(time));
@@ -353,19 +371,59 @@ class WorkshopGame {
     }
 
     render() {
-        // Clear canvas
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        console.log('Render called!'); // VERIFY IT'S RUNNING
 
-        // Draw layers in order
-        this.workshop.draw(this.ctx);  // Background, shelves, workbench, plant
-        this.constructGenerator.draw(this.ctx);  // Constructs on shelves
-        this.pieceManager.draw(this.ctx);  // Pieces
-        this.radio.draw(this.ctx);  // Radio on top
+        // NUCLEAR TEST - Just draw ANYTHING to verify canvas works!
 
-        // Debug info (remove in production)
-        if (false) {  // Set to true for debug
-            this.drawDebugInfo();
-        }
+        // Fill background
+        this.ctx.fillStyle = '#1a0b2e';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Draw a big TEST text
+        this.ctx.fillStyle = '#00ffff';
+        this.ctx.font = '40px monospace';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText('WORKSHOP', 180, 100);
+
+        // Draw radio box
+        this.ctx.fillStyle = '#8B4513';
+        this.ctx.fillRect(50, 150, 260, 80);
+        this.ctx.fillStyle = '#fff';
+        this.ctx.font = '20px monospace';
+        this.ctx.fillText('📻 CLICK FOR', 180, 185);
+        this.ctx.fillText('BIRTHDAY MESSAGES!', 180, 210);
+
+        // Draw plant circle
+        this.ctx.fillStyle = '#90EE90';
+        this.ctx.beginPath();
+        this.ctx.arc(180, 350, 40, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.fillStyle = '#fff';
+        this.ctx.font = '16px monospace';
+        this.ctx.fillText('🌱 PLANT', 180, 355);
+
+        // Draw some pieces
+        this.ctx.fillStyle = '#FFD700';
+        this.ctx.fillRect(50, 450, 30, 30);
+        this.ctx.fillStyle = '#FF69B4';
+        this.ctx.fillRect(100, 450, 30, 30);
+        this.ctx.fillStyle = '#00CED1';
+        this.ctx.fillRect(150, 450, 30, 30);
+
+        // Draw bottom text
+        this.ctx.fillStyle = '#fff';
+        this.ctx.font = '12px monospace';
+        this.ctx.fillText('Happy Birthday Colin! 🎂', 180, 550);
+        this.ctx.fillText('With love from Cyn', 180, 570);
+
+        // SKIP normal rendering to test
+        return;
+
+        // Original code (commented out for now):
+        // this.workshop.draw(this.ctx);
+        // this.constructGenerator.draw(this.ctx);
+        // this.pieceManager.draw(this.ctx);
+        // this.radio.draw(this.ctx);
     }
 
     drawDebugInfo() {
