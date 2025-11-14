@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>The Workshop</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- PWA Support -->
+    <meta name="theme-color" content="#1a0b2e">
+    <meta name="description" content="A cozy workshop where constructs keep the lights on for you">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="workshop-canvas" width="360" height="640"></canvas>
+
+        <!-- UI Overlay -->
+        <div id="ui-overlay">
+            <div id="message-display" class="hidden"></div>
+            <div id="construct-name-input" class="hidden">
+                <p>Your construct emerged as: <span id="generated-name"></span></p>
+                <input type="text" id="custom-name" placeholder="Give it a name...">
+                <button id="keep-name">Keep Original</button>
+                <button id="set-name">Rename</button>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loading">
+            <div class="loading-text">Opening workshop...</div>
+        </div>
+    </div>
+
+    <!-- Load game scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/pieces.js"></script>
+    <script src="js/constructs.js"></script>
+    <script src="js/radio.js"></script>
+    <script src="js/workshop.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>

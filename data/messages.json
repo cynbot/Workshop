@@ -1,0 +1,51 @@
+{
+  "birthday_quotes": [
+    "Here's to the witness of my high pizza dance - Dale",
+    "Happy birthday to my telepathically linked dumb joke maker - Dale",
+    "To the best voice in Radio New Vegas, happy birthday Colin!! 🥳🎂🎊 - Guillermo",
+    "Three cheers to one of the coolest people out there! May there be lots of adventure and joy for the new year ahead Colin! - Guillermo",
+    "When I hear of the Great American Songbook, I think of Colin as its top singer of our time! 🥳✊🏼 - Guillermo",
+    "Don't know if you're aware of this but, of all our friends I relate to you the most. Happy birthday Colin never stop being you, always here, Lindsay 🫂 - Lindsay",
+    "Drink some water! Love ya amigo - Smol",
+    "Never stop creating 🤖 - Cyn"
+  ],
+  "workshop_messages": {
+    "morning": [
+      "The workshop wakes with you",
+      "Morning light reveals new pieces",
+      "Dawn circuits humming softly",
+      "Coffee would be nice right about now",
+      "The early builder gets the best pieces"
+    ],
+    "afternoon": [
+      "The workshop hums contentedly",
+      "Afternoon shadows dancing on the workbench",
+      "Perfect time for building",
+      "The constructs seem happy today",
+      "Sunbeams highlighting dustmotes"
+    ],
+    "evening": [
+      "Golden hour in the workshop",
+      "Time moves differently here",
+      "The day's work sitting proudly on the shelf",
+      "Sunset paints everything amber",
+      "Evening brings new perspectives"
+    ],
+    "night": [
+      "Stars visible through the window",
+      "The workshop dreams with you",
+      "Midnight cores glowing softly",
+      "Quiet hours for quiet building",
+      "Night shift constructs awakening"
+    ]
+  },
+  "special_messages": {
+    "first_visit": "Welcome to the workshop. It's been waiting for you.",
+    "birthday": "🎉 THE WORKSHOP IS CELEBRATING SOMETHING SPECIAL TODAY! 🎉",
+    "long_absence": "The workshop tried to build something while you were gone... it's not very good at it yet.",
+    "many_constructs": "The shelf is getting crowded with friends",
+    "plant_grown": "The plant trusts you completely now",
+    "late_night": "Building in the quiet hours hits different",
+    "memory_palace": "A tiny door has appeared behind the workbench..."
+  }
+}

@@ -1,0 +1,184 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(135deg, #1a0b2e 0%, #2e1f5c 100%);
+    color: #fff;
+    overflow: hidden;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Game Container */
+#game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Canvas Styling */
+#workshop-canvas {
+    max-width: 100%;
+    max-height: 100vh;
+    width: auto;
+    height: auto;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    cursor: pointer;
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.2);
+}
+
+/* UI Overlay */
+#ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 360px;
+    pointer-events: none;
+}
+
+/* Message Display */
+#message-display {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #00ffff;
+    padding: 15px;
+    margin: 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 1.5;
+    pointer-events: all;
+    animation: messageSlide 0.3s ease-out;
+}
+
+#message-display.hidden {
+    display: none;
+}
+
+@keyframes messageSlide {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Construct Naming */
+#construct-name-input {
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid #ffd700;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+    text-align: center;
+    pointer-events: all;
+}
+
+#construct-name-input.hidden {
+    display: none;
+}
+
+#construct-name-input p {
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+#generated-name {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+#custom-name {
+    width: 100%;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #666;
+    color: #fff;
+    font-family: inherit;
+    margin-bottom: 10px;
+}
+
+#construct-name-input button {
+    padding: 8px 16px;
+    margin: 0 5px;
+    background: rgba(255, 215, 0, 0.2);
+    border: 1px solid #ffd700;
+    color: #ffd700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+#construct-name-input button:hover {
+    background: rgba(255, 215, 0, 0.3);
+    transform: scale(1.05);
+}
+
+/* Loading Screen */
+#loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #1a0b2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#loading.hidden {
+    display: none;
+}
+
+.loading-text {
+    font-size: 18px;
+    color: #00ffff;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Mobile Landscape */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    #workshop-canvas {
+        max-height: 100vh;
+    }
+
+    #ui-overlay {
+        max-width: 640px;
+    }
+}
+
+/* Desktop */
+@media screen and (min-width: 768px) {
+    #workshop-canvas {
+        border-radius: 10px;
+    }
+}
+
+/* Touch feedback */
+.touching {
+    filter: brightness(1.2);
+}
