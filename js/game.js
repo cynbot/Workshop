@@ -215,6 +215,37 @@ class WorkshopGame {
     }
 
     handleInteractionStart(x, y) {
+        console.log(`Click at: ${x}, ${y}`);
+
+        // NUCLEAR TEST - Simple click areas
+
+        // Radio area (brown box: 50-310 x 150-230)
+        if (x >= 50 && x <= 310 && y >= 150 && y <= 230) {
+            console.log('Radio clicked!');
+            this.showNuclearRadioMessage();
+            return;
+        }
+
+        // Plant area (green circle, center: 180,350 radius: 40)
+        const plantDist = Math.sqrt((x - 180) * (x - 180) + (y - 350) * (y - 350));
+        if (plantDist <= 40) {
+            console.log('Plant clicked!');
+            this.showMessage('The plant appreciates the water! 🌱');
+            return;
+        }
+
+        // Piece area (bottom squares)
+        if (y >= 450 && y <= 480) {
+            if (x >= 50 && x <= 80) {
+                this.showMessage('A golden dawn piece! ✨');
+            } else if (x >= 100 && x <= 130) {
+                this.showMessage('A pink heart piece! 💗');
+            } else if (x >= 150 && x <= 180) {
+                this.showMessage('A cyan neon piece! ⚡');
+            }
+        }
+
+        /* Original code - disabled for nuclear test
         // Check radio click
         if (this.radio.isClicked(x, y)) {
             this.radio.onClick();
@@ -243,18 +274,49 @@ class WorkshopGame {
 
         // Try to drag a piece
         this.pieceManager.startDrag(x, y);
+        */
+    }
+
+    showNuclearRadioMessage() {
+        // Birthday quotes from friends
+        const quotes = [
+            "Here's to the witness of my high pizza dance - Dale",
+            "Happy birthday to my telepathically linked dumb joke maker - Dale",
+            "To the best voice in Radio New Vegas, happy birthday Colin!! 🥳🎂🎊 - Guillermo",
+            "Three cheers to one of the coolest people out there! May there be lots of adventure and joy for the new year ahead Colin! - Guillermo",
+            "When I hear of the Great American Songbook, I think of Colin as its top singer of our time! 🥳✊🏼 - Guillermo",
+            "Don't know if you're aware of this but, of all our friends I relate to you the most. Happy birthday Colin never stop being you, always here, Lindsay 🫂 - Lindsay",
+            "Drink some water! Love ya amigo - Smol",
+            "Never stop creating 🤖 - Cyn"
+        ];
+
+        // Track which quote to show (cycle through them)
+        if (!this.nuclearQuoteIndex) {
+            this.nuclearQuoteIndex = 0;
+        }
+
+        // Get next quote in sequence
+        const quote = quotes[this.nuclearQuoteIndex];
+        this.nuclearQuoteIndex = (this.nuclearQuoteIndex + 1) % quotes.length;
+
+        // Show the message
+        this.showMessage(quote);
     }
 
     handleInteractionMove(x, y) {
-        this.pieceManager.updateDrag(x, y);
+        // NUCLEAR TEST - Skip drag operations
+        // this.pieceManager.updateDrag(x, y);
     }
 
     handleInteractionEnd(x, y) {
+        // NUCLEAR TEST - Skip drag end operations
+        /*
         const result = this.pieceManager.endDrag(x, y);
 
         if (result && result.action === 'build') {
             this.buildConstruct(result.pieces);
         }
+        */
     }
 
     buildConstruct(pieces) {
