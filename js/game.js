@@ -40,11 +40,13 @@ class WorkshopGame {
         // Show loading screen
         document.getElementById('loading').classList.remove('hidden');
 
-        // Initialize systems
+        // NUCLEAR TEST - Skip system initialization
+        /*
         this.workshop = new WorkshopEnvironment();
         this.pieceManager = new PieceManager();
         this.constructGenerator = new ConstructGenerator();
         this.radio = new RadioSystem();
+        */
 
         // Check for special events on load
         const events = window.storage.checkSpecialEvents();
@@ -53,8 +55,8 @@ class WorkshopGame {
             // Could show these as notifications
         });
 
-        // Restore saved constructs
-        this.loadSavedConstructs();
+        // NUCLEAR TEST - Skip loading constructs
+        // this.loadSavedConstructs();
 
         // Set up input handlers
         this.setupInputHandlers();
@@ -358,16 +360,19 @@ class WorkshopGame {
     }
 
     update(deltaTime) {
-        // Update all systems
-        this.workshop.update(deltaTime);
-        this.pieceManager.update(deltaTime);
-        this.constructGenerator.update(deltaTime);
-        this.radio.update(deltaTime);
+        // NUCLEAR TEST - Skip all updates to avoid errors
+        return;
+
+        // Original update code (temporarily disabled)
+        // this.workshop.update(deltaTime);
+        // this.pieceManager.update(deltaTime);
+        // this.constructGenerator.update(deltaTime);
+        // this.radio.update(deltaTime);
 
         // Check for time-based spawns occasionally
-        if (Math.random() < 0.001) {
-            this.pieceManager.checkTimeBasedSpawns();
-        }
+        // if (Math.random() < 0.001) {
+        //     this.pieceManager.checkTimeBasedSpawns();
+        // }
     }
 
     render() {
