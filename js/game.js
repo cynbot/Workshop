@@ -51,8 +51,29 @@ class WorkshopGame {
         // Set up input handlers
         this.setupInputHandlers();
 
+        // Mobile canvas setup
+        this.setupMobileCanvas();
+        window.addEventListener('resize', () => this.setupMobileCanvas());
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => this.setupMobileCanvas(), 100);
+        });
+
         // Start auto-save
         window.storage.startAutoSave();
+
+        // Temporary debug info for mobile testing
+        if (window.location.hostname === 'localhost' || window.location.hostname.includes('github.io')) {
+            const debug = document.createElement('div');
+            debug.id = 'debug-info';
+            debug.style.cssText = 'position:fixed;bottom:0;left:0;background:rgba(0,0,0,0.8);color:#0f0;padding:5px;font-size:10px;z-index:9999;font-family:monospace;';
+            debug.innerHTML = `v1.1 | ${this.canvas.width}x${this.canvas.height} | PWA:${window.matchMedia('(display-mode: standalone)').matches}`;
+            document.body.appendChild(debug);
+
+            // Update debug info on resize
+            window.addEventListener('resize', () => {
+                debug.innerHTML = `v1.1 | Win:${window.innerWidth}x${window.innerHeight} | Canvas:${this.canvas.style.width}`;
+            });
+        }
 
         // Hide loading screen
         setTimeout(() => {
@@ -88,6 +109,28 @@ class WorkshopGame {
 
         // Prevent context menu on long press
         this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+    }
+
+    setupMobileCanvas() {
+        const container = document.getElementById('game-container');
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
+
+        // Calculate scale to fit container
+        const scaleX = containerWidth / this.canvas.width;
+        const scaleY = containerHeight / this.canvas.height;
+        const scale = Math.min(scaleX, scaleY, 1); // Never scale up, only down
+
+        // Apply scaling via CSS
+        this.canvas.style.width = (this.canvas.width * scale) + 'px';
+        this.canvas.style.height = (this.canvas.height * scale) + 'px';
+
+        // Center the canvas
+        if (scale < 1) {
+            this.canvas.style.margin = '0 auto';
+        }
+
+        console.log(`Canvas scaled to ${scale} for container ${containerWidth}x${containerHeight}`);
     }
 
     getMousePos(e) {
