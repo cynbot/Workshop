@@ -148,15 +148,24 @@ class WorkshopEnvironment {
         // Draw background
         this.drawBackground(ctx);
 
-        // Draw window
-        this.drawWindow(ctx);
+        // Check if we have a background image loaded
+        const hasBackgroundImage = this.timeOfDay === 'day' ?
+            (this.backgroundImages.day && this.backgroundImages.day.complete) :
+            (this.backgroundImages.night && this.backgroundImages.night.complete);
 
-        // Draw shelves
-        this.drawShelves(ctx);
+        // Only draw these if NO background image (otherwise they're in the art!)
+        if (!hasBackgroundImage) {
+            // Draw window
+            this.drawWindow(ctx);
 
-        // Draw workbench
-        this.drawWorkbench(ctx);
+            // Draw shelves
+            this.drawShelves(ctx);
 
+            // Draw workbench
+            this.drawWorkbench(ctx);
+        }
+
+        // ALWAYS draw these (they're animated!)
         // Draw plant
         this.drawPlant(ctx);
 

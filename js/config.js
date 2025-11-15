@@ -117,7 +117,7 @@ const CONFIG = {
     ui: {
         workbench: {
             x: 100,
-            y: 400,
+            y: 417,  // Moved down 17px for better positioning
             width: 160,
             height: 100,
             slots: 3,  // 3 pieces to combine

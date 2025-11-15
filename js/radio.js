@@ -16,7 +16,7 @@ class RadioSystem {
             "To the best voice in Radio New Vegas, happy birthday Colin!! 🥳🎂🎊 - Guillermo",
             "Three cheers to one of the coolest people out there! May there be lots of adventure and joy for the new year ahead Colin! - Guillermo",
             "When I hear of the Great American Songbook, I think of Colin as its top singer of our time! 🥳✊🏼 - Guillermo",
-            "Don't know if you're aware of this but, of all our friends I relate to you the most. Happy birthday Colin never stop being you, always here, Lindsay 🫂 - Lindsay",
+            "Don't know if you're aware of this but, of all our friends I relate to you the most. Happy birthday Colin never stop being you, always here, Lindsay 🫂",
             "Drink some water! Love ya amigo - Smol",
             "Never stop creating 🤖 - Cyn",
             "Happy birthday to my favorite chaos chef - Cherish",
