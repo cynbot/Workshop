@@ -314,6 +314,11 @@ class WorkshopGame {
         if (this.radio && this.radio.isClicked(x, y)) {
             if (this.audio) this.audio.play('radio_on');
             this.radio.onClick();
+
+            // 40% chance to spawn a random piece when clicking radio!
+            if (Math.random() < 0.4 && this.pieceManager) {
+                this.spawnRandomPieceNearRadio();
+            }
             return;
         }
 
@@ -334,6 +339,11 @@ class WorkshopGame {
                     });
                     this.showMessage('The plant dropped something special!');
                 }
+            }
+
+            // 35% chance to spawn a random piece when watering!
+            if (Math.random() < 0.35 && this.pieceManager) {
+                this.spawnRandomPieceNearPlant();
             }
             return;
         }
@@ -487,6 +497,30 @@ class WorkshopGame {
             const randomType = pieceTypes[Math.floor(Math.random() * pieceTypes.length)];
             this.pieceManager.spawnPiece(randomType);
         }
+    }
+
+    spawnRandomPieceNearRadio() {
+        // Spawn a random piece near the radio
+        const pieceTypes = Object.keys(CONFIG.pieces.definitions);
+        const randomType = pieceTypes[Math.floor(Math.random() * pieceTypes.length)];
+
+        const radioBounds = CONFIG.ui.radio;
+        this.pieceManager.spawnPiece(randomType, {
+            x: radioBounds.x + radioBounds.width + 20,
+            y: radioBounds.y + 20
+        });
+    }
+
+    spawnRandomPieceNearPlant() {
+        // Spawn a random piece near the plant
+        const pieceTypes = Object.keys(CONFIG.pieces.definitions);
+        const randomType = pieceTypes[Math.floor(Math.random() * pieceTypes.length)];
+
+        const plantBounds = CONFIG.ui.plant;
+        this.pieceManager.spawnPiece(randomType, {
+            x: plantBounds.x - 30,
+            y: plantBounds.y + plantBounds.height + 10
+        });
     }
 
     start() {

@@ -20,7 +20,8 @@ class RadioSystem {
             "Drink some water! Love ya amigo - Smol",
             "Never stop creating 🤖 - Cyn",
             "Happy birthday to my favorite chaos chef - Cherish",
-            "Happy birthday, bestie! Welcome to the 30s club! I can hardly believe it.. you were 18 when we met! Let's make this an even better decade~ 🎂🎉❤️ - Bobbie"
+            "Happy birthday, bestie! Welcome to the 30s club! I can hardly believe it.. you were 18 when we met! Let's make this an even better decade~ 🎂🎉❤️ - Bobbie",
+            "You have a huge heart. Follow it and it won't lead you astray. - Chris"
         ];
 
         // Track which message to show next (for cycling)
