@@ -50,12 +50,33 @@ class WorkshopGame {
             this.workshop = null;
         }
 
-        // Keep other systems disabled for now
-        /*
-        this.pieceManager = new PieceManager();
-        this.constructGenerator = new ConstructGenerator();
-        this.radio = new RadioSystem();
-        */
+        // Initialize all game systems with error handling
+        try {
+            console.log('Initializing PieceManager...');
+            this.pieceManager = new PieceManager();
+            console.log('PieceManager initialized successfully!');
+        } catch (error) {
+            console.error('Failed to initialize PieceManager:', error);
+            this.pieceManager = null;
+        }
+
+        try {
+            console.log('Initializing ConstructGenerator...');
+            this.constructGenerator = new ConstructGenerator();
+            console.log('ConstructGenerator initialized successfully!');
+        } catch (error) {
+            console.error('Failed to initialize ConstructGenerator:', error);
+            this.constructGenerator = null;
+        }
+
+        try {
+            console.log('Initializing RadioSystem...');
+            this.radio = new RadioSystem();
+            console.log('RadioSystem initialized successfully!');
+        } catch (error) {
+            console.error('Failed to initialize RadioSystem:', error);
+            this.radio = null;
+        }
 
         // Check for special events on load
         const events = window.storage.checkSpecialEvents();
@@ -64,8 +85,10 @@ class WorkshopGame {
             // Could show these as notifications
         });
 
-        // NUCLEAR TEST - Skip loading constructs
-        // this.loadSavedConstructs();
+        // Load saved constructs if system exists
+        if (this.constructGenerator) {
+            this.loadSavedConstructs();
+        }
 
         // Set up input handlers
         this.setupInputHandlers();
@@ -92,6 +115,12 @@ class WorkshopGame {
             window.addEventListener('resize', () => {
                 debug.innerHTML = `v1.1 | Win:${window.innerWidth}x${window.innerHeight} | Canvas:${this.canvas.style.width}`;
             });
+        }
+
+        // Spawn some initial pieces to get started
+        if (this.pieceManager) {
+            console.log('Spawning initial pieces...');
+            this.spawnNewPieces();
         }
 
         // Hide loading screen
@@ -436,19 +465,24 @@ class WorkshopGame {
     }
 
     update(deltaTime) {
-        // NUCLEAR TEST - Skip all updates to avoid errors
-        return;
-
-        // Original update code (temporarily disabled)
-        // this.workshop.update(deltaTime);
-        // this.pieceManager.update(deltaTime);
-        // this.constructGenerator.update(deltaTime);
-        // this.radio.update(deltaTime);
+        // Update all systems that exist
+        if (this.workshop) {
+            this.workshop.update(deltaTime);
+        }
+        if (this.pieceManager) {
+            this.pieceManager.update(deltaTime);
+        }
+        if (this.constructGenerator) {
+            this.constructGenerator.update(deltaTime);
+        }
+        if (this.radio) {
+            this.radio.update(deltaTime);
+        }
 
         // Check for time-based spawns occasionally
-        // if (Math.random() < 0.001) {
-        //     this.pieceManager.checkTimeBasedSpawns();
-        // }
+        if (this.pieceManager && Math.random() < 0.001) {
+            this.pieceManager.checkTimeBasedSpawns();
+        }
     }
 
     render() {
