@@ -27,6 +27,7 @@ class WorkshopGame {
         // Game state
         this.isRunning = false;
         this.lastTime = 0;
+        this.musicStarted = false;  // Track if music has started (for autoplay policy)
 
         // Input handling
         this.touches = {};
@@ -113,12 +114,7 @@ class WorkshopGame {
         // Start auto-save
         window.storage.startAutoSave();
 
-        // Start ambient music (with user interaction required for autoplay policy)
-        if (this.audio) {
-            // Try to start music, but it might be blocked by browser autoplay policy
-            // It will start on first user interaction
-            this.audio.playMusic('ambient', true);
-        }
+        // Note: Music will start on first user click (browser autoplay policy)
 
         // Temporary debug info for mobile testing
         if (window.location.hostname === 'localhost' || window.location.hostname.includes('github.io')) {
@@ -298,6 +294,13 @@ class WorkshopGame {
             pieceManager: !!this.pieceManager,
             renderMode: this.renderMode || 'UNKNOWN'
         });
+
+        // Start ambient music on first user interaction (browser autoplay policy)
+        if (this.audio && !this.musicStarted) {
+            this.audio.playMusic('ambient', true);
+            this.musicStarted = true;
+            console.log('🎵 Background music started');
+        }
 
         // Try proper system handlers first, fall back to nuclear if they don't exist
 
