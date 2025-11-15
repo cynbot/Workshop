@@ -140,16 +140,28 @@ class WorkshopGame {
 
     loadSavedConstructs() {
         const savedConstructs = window.storage.data.constructs || [];
+        let loadedCount = 0;
+        let skippedCount = 0;
+
         savedConstructs.forEach(saved => {
-            // Recreate construct from saved data
-            const construct = {
-                ...saved,
-                animationFrame: 0,
-                scale: 1,
-                rotation: 0
-            };
-            this.constructGenerator.constructs.push(construct);
+            // Only load constructs with valid structure
+            if (saved.appearance && saved.position && saved.pieces) {
+                // Recreate construct from saved data
+                const construct = {
+                    ...saved,
+                    animationFrame: 0,
+                    scale: 1,
+                    rotation: 0
+                };
+                this.constructGenerator.constructs.push(construct);
+                loadedCount++;
+            } else {
+                skippedCount++;
+                console.log('Skipped invalid construct (missing appearance/position/pieces)');
+            }
         });
+
+        console.log(`Loaded ${loadedCount} constructs, skipped ${skippedCount} invalid`);
     }
 
     setupInputHandlers() {

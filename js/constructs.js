@@ -415,6 +415,12 @@ class ConstructGenerator {
 
     // Draw a single construct
     drawConstruct(ctx, construct) {
+        // Safety check: skip constructs without valid appearance
+        if (!construct.appearance || !construct.position) {
+            console.warn('Skipping construct with missing appearance/position');
+            return;
+        }
+
         ctx.save();
 
         const x = construct.position.x;
