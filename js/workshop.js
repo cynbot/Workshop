@@ -20,6 +20,39 @@ class WorkshopEnvironment {
 
         // Particle effects
         this.particles = [];  // Dust motes, sparkles, etc.
+
+        // Background images (optional - will use code drawing if not loaded)
+        this.backgroundImages = {
+            day: null,
+            night: null
+        };
+
+        // Try to load background images
+        this.loadBackgroundImages();
+    }
+
+    loadBackgroundImages() {
+        // Load day background
+        const dayImg = new Image();
+        dayImg.src = CONFIG.getAssetPath(CONFIG.workshop.day);
+        dayImg.onload = () => {
+            this.backgroundImages.day = dayImg;
+            console.log('✓ Day background loaded');
+        };
+        dayImg.onerror = () => {
+            console.log('No day background image - using code drawing');
+        };
+
+        // Load night background
+        const nightImg = new Image();
+        nightImg.src = CONFIG.getAssetPath(CONFIG.workshop.night);
+        nightImg.onload = () => {
+            this.backgroundImages.night = nightImg;
+            console.log('✓ Night background loaded');
+        };
+        nightImg.onerror = () => {
+            console.log('No night background image - using code drawing');
+        };
     }
 
     getTimeOfDay() {
@@ -132,6 +165,16 @@ class WorkshopEnvironment {
     }
 
     drawBackground(ctx) {
+        // Try to use background image first
+        const bgImage = this.timeOfDay === 'day' ? this.backgroundImages.day : this.backgroundImages.night;
+
+        if (bgImage && bgImage.complete) {
+            // Draw the background image
+            ctx.drawImage(bgImage, 0, 0, CONFIG.canvas.width, CONFIG.canvas.height);
+            return; // Skip code drawing
+        }
+
+        // Fall back to code drawing if image not available
         const colors = this.timeOfDay === 'day' ? CONFIG.colors.day : CONFIG.colors.night;
 
         // Main background gradient
