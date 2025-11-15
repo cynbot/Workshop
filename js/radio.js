@@ -18,8 +18,13 @@ class RadioSystem {
             "When I hear of the Great American Songbook, I think of Colin as its top singer of our time! 🥳✊🏼 - Guillermo",
             "Don't know if you're aware of this but, of all our friends I relate to you the most. Happy birthday Colin never stop being you, always here, Lindsay 🫂 - Lindsay",
             "Drink some water! Love ya amigo - Smol",
-            "Never stop creating 🤖 - Cyn"
+            "Never stop creating 🤖 - Cyn",
+            "Happy birthday to my favorite chaos chef - Cherish",
+            "Happy birthday, bestie! Welcome to the 30s club! I can hardly believe it.. you were 18 when we met! Let's make this an even better decade~ 🎂🎉❤️ - Bobbie"
         ];
+
+        // Track which message to show next (for cycling)
+        this.currentMessageIndex = window.storage.data.currentMessageIndex || 0;
 
         // Time-based ambient messages
         this.ambientMessages = {
@@ -112,8 +117,17 @@ class RadioSystem {
             return this.specialMessages.firstVisit;
         }
 
-        // Then all the birthday love!
-        return window.storage.getUnheardMessage(this.birthdayQuotes);
+        // Cycle through birthday quotes in order so everyone gets heard!
+        const message = this.birthdayQuotes[this.currentMessageIndex];
+
+        // Move to next message for next time
+        this.currentMessageIndex = (this.currentMessageIndex + 1) % this.birthdayQuotes.length;
+
+        // Save the index so it persists
+        window.storage.data.currentMessageIndex = this.currentMessageIndex;
+        window.storage.save();
+
+        return message;
     }
 
     getTimeOfDay() {

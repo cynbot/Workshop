@@ -68,9 +68,14 @@ class AudioManager {
         audio.src = path;
 
         // Handle load errors gracefully
-        audio.addEventListener('error', () => {
-            console.log(`Audio file not found: ${path} (this is okay - add files when ready!)`);
+        audio.addEventListener('error', (e) => {
+            console.warn(`⚠️ Audio file not found: ${path}`);
         });
+
+        // Log successful load
+        audio.addEventListener('canplaythrough', () => {
+            console.log(`✓ Audio loaded: ${key} from ${path}`);
+        }, { once: true });
 
         this.sounds.set(key, audio);
     }
@@ -84,8 +89,13 @@ class AudioManager {
 
         // Handle load errors gracefully
         audio.addEventListener('error', () => {
-            console.log(`Music file not found: ${path} (this is okay - add files when ready!)`);
+            console.warn(`⚠️ Music file not found: ${path}`);
         });
+
+        // Log successful load
+        audio.addEventListener('canplaythrough', () => {
+            console.log(`♪ Music loaded: ${key} from ${path}`);
+        }, { once: true });
 
         this.music.set(key, audio);
     }
