@@ -364,13 +364,13 @@ class ConstructGenerator {
     // Get next available shelf position
     getNextShelfPosition() {
         const shelf = CONFIG.ui.shelf;
-        const used = this.constructs.length - 1;  // Current construct not yet added
+        const used = this.constructs.length;  // Position for the next construct
 
         const row = Math.floor(used / shelf.cols);
         const col = used % shelf.cols;
 
         return {
-            x: shelf.x + (col * (320 / shelf.cols)) + 20,
+            x: shelf.x + (col * (shelf.width / shelf.cols)) + 20,
             y: shelf.y + (row * 50) + 20
         };
     }

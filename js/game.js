@@ -296,10 +296,16 @@ class WorkshopGame {
         });
 
         // Start ambient music on first user interaction (browser autoplay policy)
+        // Keep trying until music actually starts (some mobile browsers are picky)
         if (this.audio && !this.musicStarted) {
             this.audio.playMusic('ambient', true);
-            this.musicStarted = true;
-            console.log('🎵 Background music started');
+            // Check if music is actually playing
+            if (this.audio.currentMusic && !this.audio.currentMusic.paused) {
+                this.musicStarted = true;
+                console.log('🎵 Background music started');
+            } else {
+                console.log('🎵 Music blocked, will retry on next interaction');
+            }
         }
 
         // Try proper system handlers first, fall back to nuclear if they don't exist
