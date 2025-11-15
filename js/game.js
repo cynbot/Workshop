@@ -40,9 +40,18 @@ class WorkshopGame {
         // Show loading screen
         document.getElementById('loading').classList.remove('hidden');
 
-        // NUCLEAR TEST - Skip system initialization
+        // Initialize workshop environment (testing re-enable)
+        try {
+            console.log('Initializing WorkshopEnvironment...');
+            this.workshop = new WorkshopEnvironment();
+            console.log('Workshop initialized successfully!');
+        } catch (error) {
+            console.error('Failed to initialize workshop:', error);
+            this.workshop = null;
+        }
+
+        // Keep other systems disabled for now
         /*
-        this.workshop = new WorkshopEnvironment();
         this.pieceManager = new PieceManager();
         this.constructGenerator = new ConstructGenerator();
         this.radio = new RadioSystem();
@@ -217,11 +226,45 @@ class WorkshopGame {
     handleInteractionStart(x, y) {
         console.log(`Click at: ${x}, ${y}`);
 
-        // NUCLEAR TEST - Simple click areas
+        // Try proper system handlers first, fall back to nuclear if they don't exist
+
+        // Check radio click (if radio exists)
+        if (this.radio && this.radio.isClicked(x, y)) {
+            this.radio.onClick();
+            return;
+        }
+
+        // Check plant click (if workshop exists)
+        if (this.workshop && this.workshop.isPlantClicked(x, y)) {
+            const result = this.workshop.waterPlant();
+            if (result.grew) {
+                // Show growth message
+                this.showMessage(result.message);
+
+                // Check if plant produced special piece
+                if (window.storage.data.plantStage === 3 && this.pieceManager) {
+                    // Fully grown - spawn special piece!
+                    this.pieceManager.spawnPiece('heart_component', {
+                        x: this.workshop.plantBounds.x,
+                        y: this.workshop.plantBounds.y - 20
+                    });
+                    this.showMessage('The plant dropped something special!');
+                }
+            }
+            return;
+        }
+
+        // Try to drag a piece (if piece manager exists)
+        if (this.pieceManager) {
+            this.pieceManager.startDrag(x, y);
+            return;
+        }
+
+        // NUCLEAR FALLBACK - Simple click areas for when systems aren't loaded
 
         // Radio area (brown box: 50-310 x 150-230)
         if (x >= 50 && x <= 310 && y >= 150 && y <= 230) {
-            console.log('Radio clicked!');
+            console.log('Nuclear radio clicked!');
             this.showNuclearRadioMessage();
             return;
         }
@@ -229,7 +272,7 @@ class WorkshopGame {
         // Plant area (green circle, center: 180,350 radius: 40)
         const plantDist = Math.sqrt((x - 180) * (x - 180) + (y - 350) * (y - 350));
         if (plantDist <= 40) {
-            console.log('Plant clicked!');
+            console.log('Nuclear plant clicked!');
             this.showMessage('The plant appreciates the water! 🌱');
             return;
         }
@@ -244,37 +287,6 @@ class WorkshopGame {
                 this.showMessage('A cyan neon piece! ⚡');
             }
         }
-
-        /* Original code - disabled for nuclear test
-        // Check radio click
-        if (this.radio.isClicked(x, y)) {
-            this.radio.onClick();
-            return;
-        }
-
-        // Check plant click
-        if (this.workshop.isPlantClicked(x, y)) {
-            const result = this.workshop.waterPlant();
-            if (result.grew) {
-                // Show growth message
-                this.showMessage(result.message);
-
-                // Check if plant produced special piece
-                if (window.storage.data.plantStage === 3) {
-                    // Fully grown - spawn special piece!
-                    this.pieceManager.spawnPiece('heart_component', {
-                        x: this.workshop.plantBounds.x,
-                        y: this.workshop.plantBounds.y - 20
-                    });
-                    this.showMessage('The plant dropped something special!');
-                }
-            }
-            return;
-        }
-
-        // Try to drag a piece
-        this.pieceManager.startDrag(x, y);
-        */
     }
 
     showNuclearRadioMessage() {
@@ -304,19 +316,21 @@ class WorkshopGame {
     }
 
     handleInteractionMove(x, y) {
-        // NUCLEAR TEST - Skip drag operations
-        // this.pieceManager.updateDrag(x, y);
+        // Only handle drag if piece manager exists
+        if (this.pieceManager) {
+            this.pieceManager.updateDrag(x, y);
+        }
     }
 
     handleInteractionEnd(x, y) {
-        // NUCLEAR TEST - Skip drag end operations
-        /*
-        const result = this.pieceManager.endDrag(x, y);
+        // Only handle drag end if piece manager exists
+        if (this.pieceManager) {
+            const result = this.pieceManager.endDrag(x, y);
 
-        if (result && result.action === 'build') {
-            this.buildConstruct(result.pieces);
+            if (result && result.action === 'build') {
+                this.buildConstruct(result.pieces);
+            }
         }
-        */
     }
 
     buildConstruct(pieces) {
@@ -438,9 +452,36 @@ class WorkshopGame {
     }
 
     render() {
-        console.log('Render called!'); // VERIFY IT'S RUNNING
+        // Try to render workshop, fall back to nuclear test if it fails
+        try {
+            if (this.workshop) {
+                // Attempt workshop rendering
+                this.workshop.draw(this.ctx);
 
-        // NUCLEAR TEST - Just draw ANYTHING to verify canvas works!
+                // Draw other systems if they exist
+                if (this.constructGenerator) {
+                    this.constructGenerator.draw(this.ctx);
+                }
+                if (this.pieceManager) {
+                    this.pieceManager.draw(this.ctx);
+                }
+                if (this.radio) {
+                    this.radio.draw(this.ctx);
+                }
+            } else {
+                // Fall back to nuclear test
+                this.drawNuclearTest();
+            }
+        } catch (error) {
+            console.error('Render error, falling back to nuclear test:', error);
+            // Fall back to nuclear test on any error
+            this.drawNuclearTest();
+        }
+    }
+
+    // Nuclear test rendering as fallback
+    drawNuclearTest() {
+        console.log('Drawing nuclear test fallback!');
 
         // Fill background
         this.ctx.fillStyle = '#1a0b2e';
@@ -482,15 +523,6 @@ class WorkshopGame {
         this.ctx.font = '12px monospace';
         this.ctx.fillText('Happy Birthday Colin! 🎂', 180, 550);
         this.ctx.fillText('With love from Cyn', 180, 570);
-
-        // SKIP normal rendering to test
-        return;
-
-        // Original code (commented out for now):
-        // this.workshop.draw(this.ctx);
-        // this.constructGenerator.draw(this.ctx);
-        // this.pieceManager.draw(this.ctx);
-        // this.radio.draw(this.ctx);
     }
 
     drawDebugInfo() {

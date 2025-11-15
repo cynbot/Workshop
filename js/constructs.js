@@ -382,6 +382,10 @@ class ConstructGenerator {
             construct.animationFrame += deltaTime * 0.001;
 
             // Apply behavior animations
+            // FIXED: Check if behavior exists before accessing
+            if (!construct.behavior || !construct.behavior.idle || construct.behavior.idle.length === 0) {
+                return; // Skip this construct's animation
+            }
             const behavior = construct.behavior.idle[0];  // Use first idle behavior
             switch(behavior) {
                 case 'bounce':
