@@ -107,14 +107,22 @@ class WorkshopGame {
         if (window.location.hostname === 'localhost' || window.location.hostname.includes('github.io')) {
             const debug = document.createElement('div');
             debug.id = 'debug-info';
-            debug.style.cssText = 'position:fixed;bottom:0;left:0;background:rgba(0,0,0,0.8);color:#0f0;padding:5px;font-size:10px;z-index:9999;font-family:monospace;';
-            debug.innerHTML = `v1.1 | ${this.canvas.width}x${this.canvas.height} | PWA:${window.matchMedia('(display-mode: standalone)').matches}`;
+            debug.style.cssText = 'position:fixed;bottom:0;left:0;background:rgba(0,0,0,0.8);color:#0f0;padding:5px;font-size:10px;z-index:9999;font-family:monospace;width:100%;';
+
+            // Show which systems loaded
+            const systemStatus = [
+                `WS:${this.workshop ? '✓' : '✗'}`,
+                `PM:${this.pieceManager ? '✓' : '✗'}`,
+                `CG:${this.constructGenerator ? '✓' : '✗'}`,
+                `R:${this.radio ? '✓' : '✗'}`
+            ].join(' ');
+
+            debug.innerHTML = `v1.4 | ${systemStatus} | Initializing...`;
             document.body.appendChild(debug);
 
-            // Update debug info on resize
-            window.addEventListener('resize', () => {
-                debug.innerHTML = `v1.1 | Win:${window.innerWidth}x${window.innerHeight} | Canvas:${this.canvas.style.width}`;
-            });
+            // Store reference for updates from render()
+            this.debugElement = debug;
+            this.renderMode = 'UNKNOWN';
         }
 
         // Spawn some initial pieces to get started
@@ -254,6 +262,12 @@ class WorkshopGame {
 
     handleInteractionStart(x, y) {
         console.log(`Click at: ${x}, ${y}`);
+        console.log('System status at click:', {
+            radio: !!this.radio,
+            workshop: !!this.workshop,
+            pieceManager: !!this.pieceManager,
+            renderMode: this.renderMode || 'UNKNOWN'
+        });
 
         // Try proper system handlers first, fall back to nuclear if they don't exist
 
@@ -486,36 +500,79 @@ class WorkshopGame {
     }
 
     render() {
-        // Try to render workshop, fall back to nuclear test if it fails
-        try {
-            if (this.workshop) {
-                // Attempt workshop rendering
-                this.workshop.draw(this.ctx);
+        // Debug: Show what systems exist (only log once every 60 frames to reduce spam)
+        if (!this.renderCount) this.renderCount = 0;
+        this.renderCount++;
+        if (this.renderCount % 60 === 0) {
+            console.log('Render - Systems status:', {
+                workshop: !!this.workshop,
+                pieceManager: !!this.pieceManager,
+                constructGenerator: !!this.constructGenerator,
+                radio: !!this.radio
+            });
+        }
 
-                // Draw other systems if they exist
-                if (this.constructGenerator) {
-                    this.constructGenerator.draw(this.ctx);
-                }
-                if (this.pieceManager) {
-                    this.pieceManager.draw(this.ctx);
-                }
-                if (this.radio) {
-                    this.radio.draw(this.ctx);
-                }
-            } else {
-                // Fall back to nuclear test
-                this.drawNuclearTest();
+        let workshopRendered = false;
+
+        // Try to render each system individually to pinpoint failures
+        if (this.workshop) {
+            try {
+                this.workshop.draw(this.ctx);
+                workshopRendered = true;
+            } catch (error) {
+                console.error('Workshop.draw() failed:', error);
+                console.error('Error message:', error.message);
+                console.error('Error stack:', error.stack);
             }
-        } catch (error) {
-            console.error('Render error, falling back to nuclear test:', error);
-            // Fall back to nuclear test on any error
+        }
+
+        if (workshopRendered) {
+            // Only draw other systems if workshop succeeded
+            if (this.constructGenerator) {
+                try {
+                    this.constructGenerator.draw(this.ctx);
+                } catch (error) {
+                    console.error('ConstructGenerator.draw() failed:', error);
+                }
+            }
+
+            if (this.pieceManager) {
+                try {
+                    this.pieceManager.draw(this.ctx);
+                } catch (error) {
+                    console.error('PieceManager.draw() failed:', error);
+                }
+            }
+
+            if (this.radio) {
+                try {
+                    this.radio.draw(this.ctx);
+                } catch (error) {
+                    console.error('RadioSystem.draw() failed:', error);
+                }
+            }
+        } else {
+            // Fall back to nuclear test if workshop failed
             this.drawNuclearTest();
+        }
+
+        // Track render mode for debug display
+        this.renderMode = workshopRendered ? 'WORKSHOP' : 'NUCLEAR';
+        if (this.debugElement) {
+            if (workshopRendered) {
+                this.debugElement.style.color = '#0f0';
+                this.debugElement.innerHTML = `v1.4 | Mode: WORKSHOP`;
+            } else {
+                this.debugElement.style.color = '#ff0';
+                this.debugElement.innerHTML = `v1.4 | Mode: NUCLEAR (check console)`;
+            }
         }
     }
 
     // Nuclear test rendering as fallback
     drawNuclearTest() {
-        console.log('Drawing nuclear test fallback!');
+        // Comment out console spam (only log once per render mode change)
+        // console.log('Drawing nuclear test fallback!');
 
         // Fill background
         this.ctx.fillStyle = '#1a0b2e';
