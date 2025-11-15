@@ -315,8 +315,8 @@ class WorkshopGame {
             if (this.audio) this.audio.play('radio_on');
             this.radio.onClick();
 
-            // 40% chance to spawn a random piece when clicking radio!
-            if (Math.random() < 0.4 && this.pieceManager) {
+            // 20% chance to spawn a random piece when clicking radio!
+            if (Math.random() < 0.2 && this.pieceManager) {
                 this.spawnRandomPieceNearRadio();
             }
             return;
