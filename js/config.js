@@ -203,6 +203,33 @@ const CONFIG = {
     storage: {
         saveKey: 'workshop_save_v1',
         settingsKey: 'workshop_settings_v1'
+    },
+
+    // Audio configuration
+    audio: {
+        folder: 'assets/audio',
+
+        // Sound effect files
+        sfx: {
+            click: 'click.mp3',
+            piece_pickup: 'pickup.mp3',
+            piece_place: 'place.mp3',
+            construct_build: 'build.mp3',
+            radio_on: 'radio_on.mp3',
+            plant_water: 'water.mp3'
+        },
+
+        // Background music files
+        music: {
+            ambient: 'workshop_ambient.mp3'
+        },
+
+        // Volume settings
+        volume: {
+            master: 0.7,
+            sfx: 0.8,
+            music: 0.3
+        }
     }
 };
 

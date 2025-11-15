@@ -22,6 +22,7 @@ class WorkshopGame {
         this.pieceManager = null;
         this.constructGenerator = null;
         this.radio = null;
+        this.audio = null;
 
         // Game state
         this.isRunning = false;
@@ -78,6 +79,15 @@ class WorkshopGame {
             this.radio = null;
         }
 
+        try {
+            console.log('Initializing AudioManager...');
+            this.audio = new AudioManager();
+            console.log('AudioManager initialized successfully!');
+        } catch (error) {
+            console.error('Failed to initialize AudioManager:', error);
+            this.audio = null;
+        }
+
         // Check for special events on load
         const events = window.storage.checkSpecialEvents();
         events.forEach(event => {
@@ -103,6 +113,13 @@ class WorkshopGame {
         // Start auto-save
         window.storage.startAutoSave();
 
+        // Start ambient music (with user interaction required for autoplay policy)
+        if (this.audio) {
+            // Try to start music, but it might be blocked by browser autoplay policy
+            // It will start on first user interaction
+            this.audio.playMusic('ambient', true);
+        }
+
         // Temporary debug info for mobile testing
         if (window.location.hostname === 'localhost' || window.location.hostname.includes('github.io')) {
             const debug = document.createElement('div');
@@ -114,7 +131,8 @@ class WorkshopGame {
                 `WS:${this.workshop ? '✓' : '✗'}`,
                 `PM:${this.pieceManager ? '✓' : '✗'}`,
                 `CG:${this.constructGenerator ? '✓' : '✗'}`,
-                `R:${this.radio ? '✓' : '✗'}`
+                `R:${this.radio ? '✓' : '✗'}`,
+                `A:${this.audio ? '✓' : '✗'}`
             ].join(' ');
 
             debug.innerHTML = `v1.4 | ${systemStatus} | Initializing...`;
@@ -285,12 +303,14 @@ class WorkshopGame {
 
         // Check radio click (if radio exists)
         if (this.radio && this.radio.isClicked(x, y)) {
+            if (this.audio) this.audio.play('radio_on');
             this.radio.onClick();
             return;
         }
 
         // Check plant click (if workshop exists)
         if (this.workshop && this.workshop.isPlantClicked(x, y)) {
+            if (this.audio) this.audio.play('plant_water');
             const result = this.workshop.waterPlant();
             if (result.grew) {
                 // Show growth message
@@ -389,6 +409,9 @@ class WorkshopGame {
     }
 
     buildConstruct(pieces) {
+        // Play build sound
+        if (this.audio) this.audio.play('construct_build');
+
         // Generate the construct
         const construct = this.constructGenerator.generateConstruct(
             pieces[0], pieces[1], pieces[2]

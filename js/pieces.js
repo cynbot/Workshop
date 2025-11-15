@@ -84,6 +84,12 @@ class PieceManager {
             this.activePieces.push(piece);
 
             piece.scale = 1.1;  // Slightly enlarge when dragging
+
+            // Play pickup sound
+            if (window.game && window.game.audio) {
+                window.game.audio.play('piece_pickup');
+            }
+
             return true;
         }
         return false;
@@ -172,6 +178,11 @@ class PieceManager {
             x: wb.x + (slot * slotWidth) + slotWidth/2,
             y: wb.y + wb.height/2
         };
+
+        // Play place sound
+        if (window.game && window.game.audio) {
+            window.game.audio.play('piece_place');
+        }
     }
 
     // Clear workbench after building

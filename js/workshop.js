@@ -82,17 +82,22 @@ class WorkshopEnvironment {
             this.windowGlow = 0;
         }
 
-        // Update particles
+        // Update particles (deltaTime-based for smooth movement)
+        const dtFactor = deltaTime / 16.67;  // Normalize to 60fps
         this.particles = this.particles.filter(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-            p.vy += 0.1;  // Gravity
+            p.x += p.vx * dtFactor;
+            p.y += p.vy * dtFactor;
+            p.vy += 0.1 * dtFactor;  // Gravity
             p.life -= deltaTime * 0.002;
             return p.life > 0;
         });
 
-        // Spawn occasional dust motes
-        if (Math.random() < 0.01) {
+        // Spawn occasional dust motes (time-based)
+        if (!this.lastParticleSpawn) this.lastParticleSpawn = 0;
+        this.lastParticleSpawn += deltaTime;
+
+        if (this.lastParticleSpawn > 100) {  // Spawn every ~100ms
+            this.lastParticleSpawn = 0;
             this.particles.push({
                 type: 'dust',
                 x: Math.random() * CONFIG.canvas.width,
